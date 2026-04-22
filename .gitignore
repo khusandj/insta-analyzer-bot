@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+state.json
+cristiano_top_posts.json
+*_top_posts.json
+.venv/
+venv/
+env/
