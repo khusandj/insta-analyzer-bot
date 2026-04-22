@@ -57,7 +57,8 @@ def extract_top_posts(username: str):
 
     try:
         with Stealth().use_sync(sync_playwright()) as p:
-            browser = p.chromium.launch(headless=False) 
+            # Server (Render) da ishlayotganida oyna (GUI) bo'lmasligi shart, shuning uchun True qilinadi!
+            browser = p.chromium.launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
             
             if os.path.exists("state.json"):
                 context = browser.new_context(
