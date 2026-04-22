@@ -145,7 +145,6 @@ def api_scrape(username: str):
 @app.get("/api/generate")
 def api_generate(username: str, task: str):
     """Scrape qilib olingan xotira asosida AI'ga har xil senariy va rejalarni tuzdirish"""
-    # Keshdan oladi (ikkinchi marta brauzer ochilmaydi)
     top_posts = extract_top_posts(username)
     
     if not top_posts:
@@ -157,3 +156,10 @@ def api_generate(username: str, task: str):
 
 # Statik sayt ulanishi
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
+if __name__ == "__main__":
+    import uvicorn
+    # Render o'zining PORT ini topa olmasdan yopilib qolmasligi uchun (Exit 1) himoya:
+    port = int(os.environ.get("PORT", 10000))
+    # Dasturni to'g'ridan to'g'ri python orqali uyg'otish:
+    uvicorn.run("main:app", host="0.0.0.0", port=port, log_level="info")
