@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import google.generativeai as genai
 from playwright.sync_api import sync_playwright
-from playwright_stealth import Stealth
+from playwright_stealth import stealth_sync
 from pydantic import BaseModel
 
 app = FastAPI(title="SMM Instagram Ai Agent API")
@@ -56,7 +56,7 @@ def extract_top_posts(username: str):
                 pass
 
     try:
-        with Stealth().use_sync(sync_playwright()) as p:
+        with sync_playwright() as p:
             # Server (Render) da ishlayotganida oyna (GUI) bo'lmasligi shart, shuning uchun True qilinadi!
             browser = p.chromium.launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
             
@@ -73,6 +73,7 @@ def extract_top_posts(username: str):
                 )
             
             page = context.new_page()
+            stealth_sync(page) # Kutilgan himoya faollashtirildi
             page.on("response", handle_response)
             
             page.goto(f"https://www.instagram.com/{username}/", timeout=60000)
